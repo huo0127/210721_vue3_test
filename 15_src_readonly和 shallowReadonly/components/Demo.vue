@@ -1,5 +1,7 @@
 <template>
-  <h4>{{ person }}</h4>
+  <h4>當前求和為 {{ sum }}</h4>
+  <button @click="sum++">點我++</button>
+  <hr />
   <h2>姓名: {{ name }}</h2>
   <h2>年齡: {{ age }}</h2>
   <h2>薪資: {{ job.j1.salary }}k</h2>
@@ -9,12 +11,13 @@
 </template>
 
 <script>
-import { reactive, toRefs } from "vue";
+import { ref, reactive, toRefs, readonly, shallowReadonly } from "vue";
 export default {
   name: "Demo",
 
   //數據
   setup() {
+    let sum = ref(0);
     let person = reactive({
       name: "張三",
       age: 18,
@@ -24,22 +27,15 @@ export default {
         },
       },
     });
-    // const name1 = person.name;
-    // console.log(name1);
 
-    // const name2 = toRef(person, "name");
-    // console.log(name2);
-
-    const x = toRefs(person);
-    console.log("@@", x);
+    // person = readonly(person);
+    // person = shallowReadonly(person);
+    // sum = readonly(sum);
+    // sum = shallowReadonly(sum);
 
     //返回一個對象(常用)
     return {
-      person,
-      // name: toRef(person, "name"),
-      // age: toRef(person, "age"),
-      // salary: toRef(person.job.j1, "salary"),
-
+      sum,
       ...toRefs(person),
     };
   },

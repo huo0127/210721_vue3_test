@@ -1,4 +1,8 @@
 <template>
+  <h4>當前的x.y值是: {{ x.y }}</h4>
+  <button @click="x = { y: 888 }">點我替換x</button>
+  <button @click="x.y++">點我x.y++</button>
+  <hr />
   <h4>{{ person }}</h4>
   <h2>姓名: {{ name }}</h2>
   <h2>年齡: {{ age }}</h2>
@@ -9,12 +13,13 @@
 </template>
 
 <script>
-import { reactive, toRef, toRefs } from "vue";
+import { ref, reactive, toRefs, shallowReactive, shallowRef } from "vue";
 export default {
   name: "Demo",
 
   //數據
   setup() {
+    // let person = shallowReactive({  //只考慮第一層數據的響應式
     let person = reactive({
       name: "張三",
       age: 18,
@@ -24,21 +29,15 @@ export default {
         },
       },
     });
-    // const name1 = person.name;
-    // console.log(name1);
-
-    // const name2 = toRef(person, "name");
-    // console.log(name2);
-
-    const x = toRefs(person);
-    console.log("@@", x);
+    let x = shallowRef({
+      y: 0,
+    });
+    console.log("----", x);
 
     //返回一個對象(常用)
     return {
       person,
-      // name: toRef(person, "name"),
-      // age: toRef(person, "age"),
-      // salary: toRef(person.job.j1, "salary"),
+      x,
 
       ...toRefs(person),
     };
